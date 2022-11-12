@@ -14,6 +14,7 @@
 > pip install kiwipiepy
 > pip install matplotlib
 > pip install wordcloud
+> pip install beautifulsoup4
 ```
 
 ## 예제 파일 실행
