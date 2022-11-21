@@ -89,7 +89,7 @@ class KeywordMiner:
         """
         # 최소 빈도수 보다 적은 단어 삭제
         if min_cnt > 1:
-            for key in self.keyword_dict:
+            for key in list(self.keyword_dict.keys()):
                 if self.keyword_dict[key] < min_cnt:
                     del self.keyword_dict[key]
         

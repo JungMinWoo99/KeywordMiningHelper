@@ -24,10 +24,10 @@ def add_url():
 
 
 def remove_url():
-    current_select = url_list_box.curselection()
+    current_select_url = url_list_box.curselection()
 
-    if url_list_box.size() > 0 and current_select:
-        url_list_box.delete(current_select[0])
+    if url_list_box.size() > 0 and current_select_url:
+        url_list_box.delete(current_select_url[0])
 
 
 def clear_url():
@@ -52,6 +52,36 @@ def mining_keyword():
     word_tuple_list.sort(key=lambda x: x[1], reverse=True)
     for word in word_tuple_list:
         word_distribute_box.insert('', 'end', text=word[0], values=word[1], iid=word[0])
+
+
+def remove_word():
+    current_select_word_tuple = word_distribute_box.selection()
+    word_list = [current_select_word_tuple[0]]
+    miner.remove_word_from_dict(del_list=word_list)
+    word_distribute_box.delete(current_select_word_tuple[0])
+
+
+def filter_min():
+    min_num = min_num_input.get("1.0", "end-1c")
+    if min_num:
+        min_num_input.insert(tkinter.END, min_num)
+        min_num_input.delete("1.0", "end")
+        if min_num.isdecimal():
+            miner.remove_word_from_dict(min_cnt=int(min_num))
+        word_distribute_box.delete(*word_distribute_box.get_children())
+        word_tuple_list = list(zip(miner.keyword_dict.keys(), miner.keyword_dict.values()))
+        word_tuple_list.sort(key=lambda x: x[1], reverse=True)
+        for word in word_tuple_list:
+            word_distribute_box.insert('', 'end', text=word[0], values=word[1], iid=word[0])
+
+
+def wc_gen():
+    wc_generator = wcg.WordcloudGenerator(word_dict=miner.keyword_dict,
+                                          mask_image_path='images4.jpg',
+                                          coloring_opt=True,
+                                          wc_height=3200, wc_width=6400, wc_scale=10,
+                                          colormap="flag")
+    wc_generator.create_wordcloud()
 
 
 # url 입력
@@ -100,7 +130,20 @@ word_distribute_box.heading("#0", text="단어")
 word_distribute_box.column("#1", width=100, anchor="center")
 word_distribute_box.heading("one", text="분포수", anchor="center")
 
-#
+keyword_del_button = tkinter.Button(window, text="단어 삭제", width=15, height=1, command=remove_word,
+                                    repeatdelay=1000, repeatinterval=100)
+keyword_del_button.place(x=620, y=400)
+
+min_num_input = tkinter.Text(window, width=5, height=1)
+min_num_input.place(x=750, y=450)
+
+min_filter_button = tkinter.Button(window, text="최소빈도필터", width=15, height=1, command=filter_min,
+                                   repeatdelay=1000, repeatinterval=100)
+min_filter_button.place(x=620, y=450)
+
+min_filter_button = tkinter.Button(window, text="워드 클라우드 생성", width=15, height=1, command=wc_gen,
+                                   repeatdelay=1000, repeatinterval=100)
+min_filter_button.place(x=620, y=500)
 
 # 화면 실행
 

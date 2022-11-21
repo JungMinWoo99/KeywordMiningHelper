@@ -7,7 +7,7 @@ from wordcloud import WordCloud, ImageColorGenerator
 class WordcloudGenerator:
 
     def __init__(self, word_dict, font_path='C:\Windows\Fonts\malgunbd.ttf', mask_image_path=None, coloring_opt=False,
-                 background_color="white"):
+                 background_color="white", colormap="viridis", wc_width=400, wc_height=200, wc_scale=1):
         """
         워드 클라우드 생성을 위한 설정
         
@@ -31,7 +31,8 @@ class WordcloudGenerator:
             self.mask = None
 
         # 워드클라우드 객체 생성
-        self.wordcloud_obj = WordCloud(background_color=background_color, font_path=font_path, mask=self.mask)
+        self.wordcloud_obj = WordCloud(background_color=background_color, font_path=font_path, mask=self.mask,
+                                       width=wc_width, height=wc_height, scale=wc_scale, colormap=colormap)
         self.wordcloud = self.wordcloud_obj.generate_from_frequencies(word_dict)
 
     def create_wordcloud(self):
