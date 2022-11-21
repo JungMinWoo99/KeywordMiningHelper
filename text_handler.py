@@ -50,6 +50,13 @@ class KeywordMiner:
         self.keyword_dict = {}
 
     def word_extraction_from_str_list(self, text_str_list, max_word_len=10, min_cnt=0):
+        """
+        텍스트들로 부터 문자열 추출
+
+        :param text_str_list: 텍스트 문자열 리스트
+        :param max_word_len: 최대 단어 길이
+        :param min_cnt: 최소 빈도수
+        """
 
         # 문장에서 새로운 단어를 찾아 사전에 추가
         self.kiwi.extract_add_words(texts=text_str_list, min_cnt=1, max_word_len=max_word_len)
@@ -73,16 +80,21 @@ class KeywordMiner:
         # 최소 빈도수 보다 적은 수의 단어 삭제
         self.remove_word_from_dict(min_cnt=min_cnt)
 
-    def remove_word_from_dict(self, min_cnt):
+    def remove_word_from_dict(self, del_list=[], min_cnt=1):
         """
         최소 빈도수 보다 적은 수의 단어는 삭제
 
+        :param del_list: 삭제할 단어 리스트
         :param min_cnt: 최소 빈도수
-        :return:
         """
-        if min_cnt <= 1:
-            return
-        else:
+        # 최소 빈도수 보다 적은 단어 삭제
+        if min_cnt > 1:
             for key in self.keyword_dict:
                 if self.keyword_dict[key] < min_cnt:
                     del self.keyword_dict[key]
+        
+        # 리스트에 있는 단어들을 딕셔너리에서 삭제
+        if len(del_list) > 0:
+            for del_word in del_list:
+                if self.keyword_dict.get(del_word) is not None:
+                    del self.keyword_dict[del_word]
