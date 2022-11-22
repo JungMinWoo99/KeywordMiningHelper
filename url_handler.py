@@ -91,7 +91,7 @@ def text_extract_from_res_obj_list(response_obj_list):
             # print("can fetch!")
             header = response_obj.headers
             p = response_obj.read()
-            if (not (header.get_content_charset() == "utf-8" or header.get_content_charset() == "euc-kr")):
+            if not (header.get_content_charset() == "utf-8" or header.get_content_charset() == "euc-kr"):
                 encoding = header.get_content_charset(failobj='utf-8')
                 p = p.decode(encoding)
             soup = BeautifulSoup(p, 'html.parser')
