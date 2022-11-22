@@ -116,9 +116,11 @@ url_label.place(x=10, y=13)
 url_input = tkinter.Text(window, width=80, height=1)
 url_input.place(x=50, y=14)
 
-url_add_button = tkinter.Button(window, text="추가하기", width=15, height=1, command=add_url, repeatdelay=1000,
-                                repeatinterval=100)
+url_add_button = tkinter.Button(window, text="추가하기", width=15, height=1, command=add_url, repeatdelay=1000, repeatinterval=100)
 url_add_button.place(x=620, y=10)
+
+extract_sub_url_button = tkinter.Button(window, text="하위 URL 추출", width=15, height=1, command=extract_sub_url, repeatdelay=1000, repeatinterval=100)
+extract_sub_url_button.place(x=740, y=10)
 
 # url 목록 출력
 url_list_label = tkinter.Label(window, text="URL 목록", width=10, height=1)
@@ -127,20 +129,17 @@ url_list_label.place(x=1, y=50)
 url_list_box = tkinter.Listbox(window, width=80, height=20)
 url_list_box.place(x=10, y=70)
 
-extract_sub_url_button = tkinter.Button(window, text="하위 URL 추출", width=20, height=1, command=extract_sub_url, repeatdelay=1000, repeatinterval=100)
-extract_sub_url_button.place(x=600, y=80)
-
 load_url_text_file_button = tkinter.Button(window, text="URL 텍스트 파일 로드", width=20, height=1, command=load_url_text_file, repeatdelay=1000, repeatinterval=100)
-load_url_text_file_button.place(x=600, y=120)
+load_url_text_file_button.place(x=600, y=80)
 
 remove_url_button = tkinter.Button(window, text="삭제하기", width=20, height=1, command=remove_url, repeatdelay=1000, repeatinterval=100)
-remove_url_button.place(x=600, y=160)
+remove_url_button.place(x=600, y=120)
 
 clear_url_button = tkinter.Button(window, text="초기화", width=20, height=1, command=clear_url, repeatdelay=1000, repeatinterval=100)
-clear_url_button.place(x=600, y=200)
+clear_url_button.place(x=600, y=160)
 
 mining_keyword_button = tkinter.Button(window, text="키워드 추출", width=20, height=1, command=mining_keyword, repeatdelay=1000, repeatinterval=100)
-mining_keyword_button.place(x=600, y=240)
+mining_keyword_button.place(x=600, y=200)
 
 # 단어 분포 결과 출력
 word_distribute_label = tkinter.Label(window, text="단어 분포", width=7, height=1)
