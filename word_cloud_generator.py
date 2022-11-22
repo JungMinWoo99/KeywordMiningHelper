@@ -18,6 +18,7 @@ class WordcloudGenerator:
         :param background_color: 사용하는 이미지의 배경색
         """
         # 이미지 마스크 설정
+        self.coloring_opt = False
         if mask_image_path is not None:
             self.mask = self.mask = np.array(Image.open(mask_image_path))
             if coloring_opt is True:

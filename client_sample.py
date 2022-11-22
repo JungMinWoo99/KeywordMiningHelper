@@ -3,6 +3,7 @@ import tkinter.ttk
 import url_handler as uh
 import text_handler as th
 import word_cloud_generator as wcg
+import matplotlib.colors as mcolors
 
 # 화면 구성 요소
 
@@ -13,6 +14,12 @@ window.resizable(False, False)
 
 # 키워드 추출
 miner = th.KeywordMiner()
+
+# 콤보 박스에 사용할 리스트
+colormap_list = wcg.plt.colormaps()
+colormap_list.sort()
+by_hsv = sorted((tuple(mcolors.rgb_to_hsv(mcolors.to_rgb(color))), name) for name, color in mcolors.CSS4_COLORS.items())
+background_color_list = [x[1] for x in by_hsv]
 
 
 def add_url():
@@ -47,6 +54,10 @@ def mining_keyword():
     # 텍스트로 부터 키워드 추출
     miner.word_extraction_from_str_list(text_from_url)
 
+    # 트리뷰 비우기
+    for i in word_distribute_box.get_children():
+        word_distribute_box.delete(i)
+
     # 추출한 텍스트를 분포수 기준으로 정렬하여 단어 분포에 입력
     word_tuple_list = list(zip(miner.keyword_dict.keys(), miner.keyword_dict.values()))
     word_tuple_list.sort(key=lambda x: x[1], reverse=True)
@@ -76,11 +87,19 @@ def filter_min():
 
 
 def wc_gen():
+    image_path = 'images4.jpg' if use_image_check_var.get() == 1 else None
+    use_colormap_bool = use_colormap_check_var.get() == 1
+    colormap = colormap_combo_box.get() if colormap_combo_box.get() != '' else 'viridis'
+    background_color = background_color_combo_box.get() if background_color_combo_box.get() != '' else 'black'
+    wc_height = wc_height_input.get("1.0", "end-1c") if wc_height_input.get("1.0", "end-1c") != '' and wc_height_input.get("1.0", "end-1c").isdecimal() else '1000'
+    wc_width = wc_width_input.get("1.0", "end-1c") if wc_width_input.get("1.0", "end-1c") != '' and wc_width_input.get("1.0", "end-1c").isdecimal() else '1000'
+
     wc_generator = wcg.WordcloudGenerator(word_dict=miner.keyword_dict,
-                                          mask_image_path='images4.jpg',
-                                          coloring_opt=True,
-                                          wc_height=3200, wc_width=6400, wc_scale=10,
-                                          colormap="flag")
+                                          mask_image_path=image_path,
+                                          coloring_opt=use_colormap_bool,
+                                          wc_height=int(wc_height), wc_width=int(wc_width), wc_scale=10,
+                                          colormap=colormap,
+                                          background_color=background_color)
     wc_generator.create_wordcloud()
 
 
@@ -144,6 +163,38 @@ min_filter_button.place(x=620, y=450)
 min_filter_button = tkinter.Button(window, text="워드 클라우드 생성", width=15, height=1, command=wc_gen,
                                    repeatdelay=1000, repeatinterval=100)
 min_filter_button.place(x=620, y=500)
+
+background_color_label = tkinter.Label(window, text="배경색", width=5, height=1)
+background_color_label.place(x=550, y=550)
+background_color_combo_box = tkinter.ttk.Combobox(textvariable=str, width=20)
+background_color_combo_box['value'] = background_color_list
+background_color_combo_box.place(x=620, y=550)
+
+colormap_label = tkinter.Label(window, text="컬러맵", width=5, height=1)
+colormap_label.place(x=550, y=600)
+colormap_combo_box = tkinter.ttk.Combobox(textvariable=str, width=20)
+colormap_combo_box['value'] = colormap_list
+colormap_combo_box.place(x=620, y=600)
+
+use_image_check_var = tkinter.IntVar()
+use_image_check_button = tkinter.ttk.Checkbutton(variable=use_image_check_var)
+use_image_check_button.config(text="이미지 사용")
+use_image_check_button.place(x=620, y=650)
+
+use_colormap_check_var = tkinter.IntVar()
+use_colormap_check_button = tkinter.ttk.Checkbutton(variable=use_colormap_check_var)
+use_colormap_check_button.config(text="이미지 컬러링 사용")
+use_colormap_check_button.place(x=620, y=700)
+
+wc_width_label = tkinter.Label(window, text="사진 폭", width=10, height=1)
+wc_width_label.place(x=550, y=750)
+wc_width_input = tkinter.Text(window, width=5, height=1)
+wc_width_input.place(x=620, y=750)
+
+wc_height_label = tkinter.Label(window, text="사진 높이", width=10, height=1)
+wc_height_label.place(x=550, y=800)
+wc_height_input = tkinter.Text(window, width=5, height=1)
+wc_height_input.place(x=620, y=800)
 
 # 화면 실행
 
