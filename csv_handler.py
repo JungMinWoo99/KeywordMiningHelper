@@ -18,4 +18,4 @@ def dict_to_csv(input_dict, file_name="word_dict.csv"):
     with open(file_name, 'w', encoding='UTF-8') as f:
         dict_series = pd.Series(input_dict)
         data = pd.DataFrame(dict_series)
-        data.to_csv(file_name)
+        data.to_csv(file_name,encoding="utf-8-sig")
