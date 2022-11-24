@@ -15,6 +15,7 @@
 > pip install matplotlib
 > pip install wordcloud
 > pip install beautifulsoup4
+> pip install pandas
 ```
 
 ## 예제 파일 실행
