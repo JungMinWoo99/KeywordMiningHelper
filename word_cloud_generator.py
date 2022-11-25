@@ -41,14 +41,21 @@ class WordcloudGenerator:
         워드 클라우드 생성
         :return:
         """
-        plt.figure(figsize=(16, 8))
+        width=float(self.wordcloud.width);
+        height=float(self.wordcloud.height);
+
+        px = 1/plt.rcParams['figure.dpi']  # pixel in inches
+        plt.figure(figsize=(width*px,height*px))
         if self.coloring_opt is False:
             # not Image-colored wordcloud
             plt.imshow(self.wordcloud, interpolation='bilinear')
             plt.axis("off")
+            plt.tight_layout(pad=0)
             plt.show()
         else:
             # Image-colored wordcloud
             plt.imshow(self.wordcloud.recolor(color_func=self.image_colors), interpolation='bilinear')
             plt.axis("off")
+            plt.tight_layout(pad=0)
             plt.show()
+        
